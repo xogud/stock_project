@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
+const API_BASE = import.meta.env.VITE_API_BASE || ''
 const VIEWED_STOCKS_KEY = 'stock-risk-viewed-stocks'
 const MAX_VIEWED_STOCKS = 8
 
