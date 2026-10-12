@@ -30,7 +30,6 @@ COPY data/processed/stock_info.csv ./data/processed/stock_info.csv
 COPY data/processed/feature_data.csv ./data/processed/feature_data.csv
 COPY data/processed/market_index.csv ./data/processed/market_index.csv
 COPY data/processed/prediction_result.csv ./data/processed/prediction_result.csv
-COPY data/processed/dart_corp_codes.csv ./data/processed/dart_corp_codes.csv
 COPY data/processed/daily_backtest/daily_backtest_report_latest.json ./data/processed/daily_backtest/daily_backtest_report_latest.json
 COPY data/model_metrics/xgboost_risk_model_latest_feature_importance.csv ./data/model_metrics/xgboost_risk_model_latest_feature_importance.csv
 COPY data/model_metrics/xgboost_risk_model_latest_feature_stats.json ./data/model_metrics/xgboost_risk_model_latest_feature_stats.json

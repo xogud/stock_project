@@ -15,7 +15,6 @@ data/processed/*
 !data/processed/feature_data.csv
 !data/processed/market_index.csv
 !data/processed/prediction_result.csv
-!data/processed/dart_corp_codes.csv
 !data/processed/daily_backtest/
 data/processed/daily_backtest/*
 !data/processed/daily_backtest/daily_backtest_report_latest.json
