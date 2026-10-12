@@ -48,6 +48,7 @@ FRONTEND_DIST = Path("frontend/dist")
 FRONTEND_INDEX = FRONTEND_DIST / "index.html"
 START_DATE = "2020-01-01"
 PRICE_SOURCE = os.getenv("PRICE_SOURCE", "cache").strip().lower()
+DART_ENABLED = os.getenv("DART_ENABLED", "0").strip().lower() in {"1", "true", "yes", "on"}
 DART_ANALYZE_DOCUMENTS = os.getenv("DART_ANALYZE_DOCUMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
 PRELOAD_CACHE = os.getenv("PRELOAD_CACHE", "1").strip().lower() in {"1", "true", "yes", "on"}
 
@@ -119,8 +120,14 @@ def preload_common_data() -> None:
         return
     try:
         stock_listing()
+        model()
+        feature_context()
         top_risks_from_csv(10)
         thresholds()
+        for item in top_risks_from_csv(6).get("items", [])[:3]:
+            ticker = item.get("ticker")
+            if ticker:
+                build_prediction_frame(str(ticker))
     except Exception:
         pass
 
@@ -400,6 +407,13 @@ def recent_disclosures(
     limit: int = 8,
     risk_probability: float | None = None,
 ) -> dict[str, Any]:
+    if not DART_ENABLED:
+        return {
+            "available": False,
+            "reason": "공시 조회는 빠른 분석을 위해 현재 비활성화되어 있습니다.",
+            "items": [],
+        }
+
     key = dart_api_key()
     if not key:
         return {
