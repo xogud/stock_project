@@ -27,6 +27,7 @@ git push -u origin main
 또는 Web Service로 직접 만들 경우:
 
 - Runtime: Docker
+- Plan: `Free`
 - Dockerfile Path: `Dockerfile`
 - Health Check Path: `/api/health`
 

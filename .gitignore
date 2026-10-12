@@ -5,9 +5,19 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 
-# Keep only the deployment-time data file. The app downloads price data live.
+# Keep only deployment-time data files.
 data/processed/*
 !data/processed/stock_info.csv
+!data/processed/market_context_daily.csv
+!data/processed/market_index.csv
+!data/processed/prediction_result.csv
+!data/processed/daily_backtest/
+data/processed/daily_backtest/*
+!data/processed/daily_backtest/daily_backtest_report_latest.json
+
+data/model_metrics/*
+!data/model_metrics/xgboost_risk_model_latest_feature_importance.csv
+!data/model_metrics/xgboost_risk_model_latest_feature_stats.json
 
 # Keep only the latest deployment model.
 models/*

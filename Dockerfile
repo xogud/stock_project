@@ -27,7 +27,7 @@ COPY database ./database
 COPY data/raw ./data/raw
 COPY data/reference ./data/reference
 COPY data/processed/stock_info.csv ./data/processed/stock_info.csv
-COPY data/processed/feature_data.csv ./data/processed/feature_data.csv
+COPY data/processed/market_context_daily.csv ./data/processed/market_context_daily.csv
 COPY data/processed/market_index.csv ./data/processed/market_index.csv
 COPY data/processed/prediction_result.csv ./data/processed/prediction_result.csv
 COPY data/processed/daily_backtest/daily_backtest_report_latest.json ./data/processed/daily_backtest/daily_backtest_report_latest.json

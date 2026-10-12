@@ -38,6 +38,7 @@ from risk_thresholds import load_risk_thresholds, risk_level
 MODEL_PATH = Path("models/xgboost_risk_model_latest.joblib")
 STOCK_INFO_FILE = Path("data/processed/stock_info.csv")
 FEATURE_FILE = Path("data/processed/feature_data.csv")
+MARKET_CONTEXT_FILE = Path("data/processed/market_context_daily.csv")
 MARKET_INDEX_FILE = Path("data/processed/market_index.csv")
 PREDICTION_FILE = Path("data/processed/prediction_result.csv")
 BACKTEST_REPORT_FILE = Path("data/processed/daily_backtest/daily_backtest_report_latest.json")
@@ -497,12 +498,13 @@ def market_index_context(date_value: Any, stock_return: float | None = None) -> 
 
 
 def market_context_for_date(date_value: Any, stock_code: str | None = None) -> dict[str, Any]:
-    if not FEATURE_FILE.exists():
+    context_file = MARKET_CONTEXT_FILE if MARKET_CONTEXT_FILE.exists() else FEATURE_FILE
+    if not context_file.exists():
         return {"available": False}
 
     target_date = pd.Timestamp(date_value).date().isoformat()
     features = pd.read_csv(
-        FEATURE_FILE,
+        context_file,
         dtype={"stock_code": str},
         usecols=["date", "stock_code", "sector", "return_1d"],
         encoding="utf-8-sig",

@@ -12,7 +12,7 @@ data/mysql_import_cp949/
 data/mysql_import_ready/
 data/processed/*
 !data/processed/stock_info.csv
-!data/processed/feature_data.csv
+!data/processed/market_context_daily.csv
 !data/processed/market_index.csv
 !data/processed/prediction_result.csv
 !data/processed/daily_backtest/
