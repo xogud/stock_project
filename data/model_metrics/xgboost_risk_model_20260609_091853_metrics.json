@@ -1,0 +1,78 @@
+{
+  "train": {
+    "accuracy": 0.753100673489023,
+    "precision": 0.33447122753239517,
+    "recall": 0.5128177739799188,
+    "f1": 0.40487434643278797,
+    "roc_auc": 0.7316956044538039,
+    "threshold": 0.55
+  },
+  "test": {
+    "accuracy": 0.6221284575714956,
+    "precision": 0.29103726082578046,
+    "recall": 0.5501269035532995,
+    "f1": 0.38068057080131723,
+    "roc_auc": 0.6411448518032824,
+    "threshold": 0.55
+  },
+  "rows": {
+    "total": 72096,
+    "train": 57165,
+    "test": 14931,
+    "train_positive": 9362,
+    "train_negative": 47803,
+    "test_positive": 3152,
+    "test_negative": 11779,
+    "scale_pos_weight": 5.106067079683828,
+    "positive_class_weight_factor": 1.0
+  },
+  "dates": {
+    "train_start": "2020-03-27",
+    "train_end": "2025-02-14",
+    "test_start": "2025-02-17",
+    "test_end": "2026-05-11"
+  },
+  "feature_columns": [
+    "return_1d",
+    "return_3d",
+    "return_5d",
+    "return_10d",
+    "return_20d",
+    "gap_open",
+    "intraday_range",
+    "close_position",
+    "ma5_gap",
+    "ma20_gap",
+    "ma60_gap",
+    "trend_strength_5_20",
+    "volatility_5d",
+    "volatility_10d",
+    "volatility_20d",
+    "volatility_ratio_5_20",
+    "volume_change_1d",
+    "volume_ratio_5d",
+    "volume_ratio_20d",
+    "down_days_5d",
+    "down_days_10d",
+    "price_volume_shock",
+    "downside_volume_shock",
+    "rsi_14",
+    "rsi_change_3d",
+    "macd",
+    "macd_signal",
+    "macd_hist",
+    "macd_cross",
+    "bollinger_width",
+    "bollinger_position",
+    "drawdown_20d",
+    "z_score",
+    "ewma_value",
+    "cusum_pos",
+    "cusum_neg",
+    "anomaly_score"
+  ],
+  "model_params": {
+    "max_depth": 3,
+    "decision_threshold": 0.55
+  }
+}

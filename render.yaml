@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: stock-risk-monitor
+    env: docker
+    healthCheckPath: /api/health
+    envVars:
+      - key: MYSQL_ENABLED
+        value: "0"
+      - key: DART_API_KEY
+        sync: false

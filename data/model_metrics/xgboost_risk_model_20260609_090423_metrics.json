@@ -1,0 +1,73 @@
+{
+  "train": {
+    "accuracy": 0.42870826491516145,
+    "precision": 0.21284665780010836,
+    "recall": 0.8571711961912319,
+    "f1": 0.34101491594980665,
+    "roc_auc": 0.697965769606592,
+    "threshold": 0.25
+  },
+  "test": {
+    "accuracy": 0.38571993149782635,
+    "precision": 0.23351266921207914,
+    "recall": 0.8451633165829145,
+    "f1": 0.3659233070437857,
+    "roc_auc": 0.62135727604517,
+    "threshold": 0.25
+  },
+  "validation": {
+    "accuracy": 0.4224796647769288,
+    "precision": 0.2158413432291033,
+    "recall": 0.7523324851569126,
+    "f1": 0.33544483312848633,
+    "roc_auc": 0.5877132444567525,
+    "threshold": 0.25
+  },
+  "rows": {
+    "total": 73646,
+    "train": 58464,
+    "test": 15182,
+    "train_positive": 10082,
+    "train_negative": 48382,
+    "test_positive": 3184,
+    "test_negative": 11998,
+    "scale_pos_weight": 2.3994247173179923,
+    "positive_class_weight_factor": 0.5
+  },
+  "dates": {
+    "train_start": "2020-02-20",
+    "train_end": "2025-02-07",
+    "test_start": "2025-02-10",
+    "test_end": "2026-05-11"
+  },
+  "feature_columns": [
+    "return_1d",
+    "return_3d",
+    "return_5d",
+    "ma20_gap",
+    "volatility_5d",
+    "volatility_10d",
+    "volatility_20d",
+    "volume_change_1d",
+    "volume_ratio_5d",
+    "volume_ratio_20d",
+    "rsi_14",
+    "rsi_change_3d",
+    "macd",
+    "macd_signal",
+    "macd_hist",
+    "macd_cross",
+    "bollinger_width",
+    "bollinger_position",
+    "drawdown_20d",
+    "z_score",
+    "ewma_value",
+    "cusum_pos",
+    "cusum_neg",
+    "anomaly_score"
+  ],
+  "model_params": {
+    "max_depth": 3,
+    "decision_threshold": 0.25
+  }
+}

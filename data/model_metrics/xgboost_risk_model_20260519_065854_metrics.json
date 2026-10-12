@@ -1,0 +1,48 @@
+{
+  "train": {
+    "accuracy": 0.7240181992337165,
+    "precision": 0.3281862049389725,
+    "recall": 0.5733981352906169,
+    "f1": 0.4174459327725024,
+    "roc_auc": 0.7310864652563214
+  },
+  "test": {
+    "accuracy": 0.6371360822026083,
+    "precision": 0.28420271022832744,
+    "recall": 0.4808417085427136,
+    "f1": 0.357251195893128,
+    "roc_auc": 0.6134548518764853
+  },
+  "rows": {
+    "total": 73646,
+    "train": 58464,
+    "test": 15182,
+    "train_positive": 10082,
+    "train_negative": 48382,
+    "test_positive": 3184,
+    "test_negative": 11998
+  },
+  "dates": {
+    "train_start": "2020-02-20",
+    "train_end": "2025-02-07",
+    "test_start": "2025-02-10",
+    "test_end": "2026-05-11"
+  },
+  "feature_columns": [
+    "return_1d",
+    "ma20_gap",
+    "volatility_20d",
+    "volume_change_1d",
+    "volume_ratio_20d",
+    "rsi_14",
+    "macd",
+    "macd_signal",
+    "macd_hist",
+    "bollinger_width",
+    "z_score",
+    "ewma_value",
+    "cusum_pos",
+    "cusum_neg",
+    "anomaly_score"
+  ]
+}

@@ -1,0 +1,1663 @@
+{
+  "train": {
+    "accuracy": 0.9057357405336316,
+    "precision": 0.39770402364173674,
+    "recall": 0.15226283724978243,
+    "f1": 0.2202152432500472,
+    "roc_auc": 0.7642387536388489,
+    "threshold": 0.86
+  },
+  "validation": {
+    "accuracy": 0.8438928712535982,
+    "precision": 0.40595297648824413,
+    "recall": 0.15740471341286005,
+    "f1": 0.22685023411838703,
+    "roc_auc": 0.7408794637763779,
+    "threshold": 0.86
+  },
+  "test": {
+    "accuracy": 0.781744316708445,
+    "precision": 0.4877401778032693,
+    "recall": 0.3425823345754859,
+    "f1": 0.40247293379873395,
+    "roc_auc": 0.7695733169198451,
+    "threshold": 0.86
+  },
+  "operational": {
+    "validation": {
+      "risk_threshold": 0.86,
+      "danger_threshold": 0.93,
+      "rows": 70868,
+      "days": 246,
+      "stocks": 291,
+      "base_risk_rate": 0.14549585144211774,
+      "alert_count": 3998,
+      "alert_rate": 0.05641474290229723,
+      "avg_daily_alerts": 16.252032520325205,
+      "median_daily_alerts": 15.0,
+      "alert_return_summary": {
+        "mean_future_5d_return": 0.0110153325642514,
+        "median_future_5d_return": -0.0027894057048598,
+        "mean_future_min_return_1d": -0.054995562891890906,
+        "normal_mean_future_5d_return": 0.0034562777331997615,
+        "alert_vs_normal_future_5d_return_gap": 0.007559054831051638
+      },
+      "level_performance": [
+        {
+          "risk_level": "NORMAL",
+          "rows": 66870,
+          "row_rate": 0.9435852570977028,
+          "actual_risk_rate": 0.12992373261552265,
+          "avg_probability": 0.5581508278846741
+        },
+        {
+          "risk_level": "CAUTION",
+          "rows": 3401,
+          "row_rate": 0.047990630467912174,
+          "actual_risk_rate": 0.38576889150249927,
+          "avg_probability": 0.8899708986282349
+        },
+        {
+          "risk_level": "DANGER",
+          "rows": 597,
+          "row_rate": 0.008424112434385053,
+          "actual_risk_rate": 0.5209380234505863,
+          "avg_probability": 0.9467042684555054
+        }
+      ],
+      "top_n": [
+        {
+          "top_n": 5,
+          "rows": 1230,
+          "days": 246,
+          "hit_rate": 0.47560975609756095,
+          "mean_daily_hit_rate": 0.47560975609756095,
+          "mean_daily_risk_count": 2.3780487804878048,
+          "mean_future_5d_return": 0.011210153015488852,
+          "mean_future_min_return_1d": -0.06358260347604718
+        },
+        {
+          "top_n": 10,
+          "rows": 2460,
+          "days": 246,
+          "hit_rate": 0.4272357723577236,
+          "mean_daily_hit_rate": 0.42723577235772353,
+          "mean_daily_risk_count": 4.272357723577236,
+          "mean_future_5d_return": 0.011514689949618045,
+          "mean_future_min_return_1d": -0.05766602119552808
+        },
+        {
+          "top_n": 20,
+          "rows": 4920,
+          "days": 246,
+          "hit_rate": 0.37703252032520324,
+          "mean_daily_hit_rate": 0.37703252032520324,
+          "mean_daily_risk_count": 7.540650406504065,
+          "mean_future_5d_return": 0.009278725643900386,
+          "mean_future_min_return_1d": -0.05255811194935815
+        }
+      ],
+      "monthly_alert_precision": [
+        {
+          "month": "2024-04",
+          "alerts": 100,
+          "actual_risks": 27,
+          "precision": 0.27
+        },
+        {
+          "month": "2024-05",
+          "alerts": 416,
+          "actual_risks": 139,
+          "precision": 0.33413461538461536
+        },
+        {
+          "month": "2024-06",
+          "alerts": 397,
+          "actual_risks": 169,
+          "precision": 0.4256926952141058
+        },
+        {
+          "month": "2024-07",
+          "alerts": 334,
+          "actual_risks": 179,
+          "precision": 0.5359281437125748
+        },
+        {
+          "month": "2024-08",
+          "alerts": 263,
+          "actual_risks": 92,
+          "precision": 0.34980988593155893
+        },
+        {
+          "month": "2024-09",
+          "alerts": 130,
+          "actual_risks": 34,
+          "precision": 0.26153846153846155
+        },
+        {
+          "month": "2024-10",
+          "alerts": 161,
+          "actual_risks": 66,
+          "precision": 0.40993788819875776
+        },
+        {
+          "month": "2024-11",
+          "alerts": 290,
+          "actual_risks": 155,
+          "precision": 0.5344827586206896
+        },
+        {
+          "month": "2024-12",
+          "alerts": 242,
+          "actual_risks": 94,
+          "precision": 0.3884297520661157
+        },
+        {
+          "month": "2025-01",
+          "alerts": 357,
+          "actual_risks": 142,
+          "precision": 0.39775910364145656
+        },
+        {
+          "month": "2025-02",
+          "alerts": 609,
+          "actual_risks": 258,
+          "precision": 0.4236453201970443
+        },
+        {
+          "month": "2025-03",
+          "alerts": 413,
+          "actual_risks": 170,
+          "precision": 0.4116222760290557
+        },
+        {
+          "month": "2025-04",
+          "alerts": 286,
+          "actual_risks": 98,
+          "precision": 0.34265734265734266
+        }
+      ],
+      "stock_alert_summary": [
+        {
+          "stock_code": "323280",
+          "alerts": 149,
+          "actual_risks": 79,
+          "precision": 0.5302013422818792
+        },
+        {
+          "stock_code": "087010",
+          "alerts": 124,
+          "actual_risks": 54,
+          "precision": 0.43548387096774194
+        },
+        {
+          "stock_code": "347700",
+          "alerts": 124,
+          "actual_risks": 52,
+          "precision": 0.41935483870967744
+        },
+        {
+          "stock_code": "310210",
+          "alerts": 123,
+          "actual_risks": 52,
+          "precision": 0.42276422764227645
+        },
+        {
+          "stock_code": "950160",
+          "alerts": 89,
+          "actual_risks": 43,
+          "precision": 0.48314606741573035
+        },
+        {
+          "stock_code": "000250",
+          "alerts": 78,
+          "actual_risks": 20,
+          "precision": 0.2564102564102564
+        },
+        {
+          "stock_code": "007390",
+          "alerts": 76,
+          "actual_risks": 34,
+          "precision": 0.4473684210526316
+        },
+        {
+          "stock_code": "089030",
+          "alerts": 76,
+          "actual_risks": 33,
+          "precision": 0.4342105263157895
+        },
+        {
+          "stock_code": "083650",
+          "alerts": 73,
+          "actual_risks": 35,
+          "precision": 0.4794520547945205
+        },
+        {
+          "stock_code": "000150",
+          "alerts": 71,
+          "actual_risks": 26,
+          "precision": 0.36619718309859156
+        },
+        {
+          "stock_code": "097230",
+          "alerts": 70,
+          "actual_risks": 34,
+          "precision": 0.4857142857142857
+        },
+        {
+          "stock_code": "232140",
+          "alerts": 66,
+          "actual_risks": 38,
+          "precision": 0.5757575757575758
+        },
+        {
+          "stock_code": "204270",
+          "alerts": 65,
+          "actual_risks": 34,
+          "precision": 0.5230769230769231
+        },
+        {
+          "stock_code": "000500",
+          "alerts": 65,
+          "actual_risks": 26,
+          "precision": 0.4
+        },
+        {
+          "stock_code": "010120",
+          "alerts": 64,
+          "actual_risks": 27,
+          "precision": 0.421875
+        },
+        {
+          "stock_code": "042660",
+          "alerts": 62,
+          "actual_risks": 30,
+          "precision": 0.4838709677419355
+        },
+        {
+          "stock_code": "257720",
+          "alerts": 62,
+          "actual_risks": 24,
+          "precision": 0.3870967741935484
+        },
+        {
+          "stock_code": "071970",
+          "alerts": 58,
+          "actual_risks": 17,
+          "precision": 0.29310344827586204
+        },
+        {
+          "stock_code": "229640",
+          "alerts": 58,
+          "actual_risks": 16,
+          "precision": 0.27586206896551724
+        },
+        {
+          "stock_code": "457190",
+          "alerts": 56,
+          "actual_risks": 24,
+          "precision": 0.42857142857142855
+        },
+        {
+          "stock_code": "437730",
+          "alerts": 55,
+          "actual_risks": 32,
+          "precision": 0.5818181818181818
+        },
+        {
+          "stock_code": "006340",
+          "alerts": 54,
+          "actual_risks": 23,
+          "precision": 0.42592592592592593
+        },
+        {
+          "stock_code": "064350",
+          "alerts": 54,
+          "actual_risks": 14,
+          "precision": 0.25925925925925924
+        },
+        {
+          "stock_code": "031980",
+          "alerts": 53,
+          "actual_risks": 24,
+          "precision": 0.4528301886792453
+        },
+        {
+          "stock_code": "011790",
+          "alerts": 53,
+          "actual_risks": 16,
+          "precision": 0.3018867924528302
+        },
+        {
+          "stock_code": "347850",
+          "alerts": 50,
+          "actual_risks": 26,
+          "precision": 0.52
+        },
+        {
+          "stock_code": "103590",
+          "alerts": 50,
+          "actual_risks": 20,
+          "precision": 0.4
+        },
+        {
+          "stock_code": "127120",
+          "alerts": 50,
+          "actual_risks": 19,
+          "precision": 0.38
+        },
+        {
+          "stock_code": "007660",
+          "alerts": 50,
+          "actual_risks": 15,
+          "precision": 0.3
+        },
+        {
+          "stock_code": "082740",
+          "alerts": 47,
+          "actual_risks": 20,
+          "precision": 0.425531914893617
+        }
+      ]
+    },
+    "test": {
+      "risk_threshold": 0.86,
+      "danger_threshold": 0.93,
+      "rows": 92552,
+      "days": 314,
+      "stocks": 299,
+      "base_risk_rate": 0.21456046330711384,
+      "alert_count": 13948,
+      "alert_rate": 0.15070446883913907,
+      "avg_daily_alerts": 44.4203821656051,
+      "median_daily_alerts": 39.0,
+      "alert_return_summary": {
+        "mean_future_5d_return": 0.021720041131464838,
+        "median_future_5d_return": 0.0029790483012199,
+        "mean_future_min_return_1d": -0.06297806640229267,
+        "normal_mean_future_5d_return": 0.011419095693300225,
+        "alert_vs_normal_future_5d_return_gap": 0.010300945438164613
+      },
+      "level_performance": [
+        {
+          "risk_level": "NORMAL",
+          "rows": 78604,
+          "row_rate": 0.8492955311608609,
+          "actual_risk_rate": 0.1660856953844588,
+          "avg_probability": 0.6483268737792969
+        },
+        {
+          "risk_level": "DANGER",
+          "rows": 2351,
+          "row_rate": 0.025401936208833954,
+          "actual_risk_rate": 0.5767758400680562,
+          "avg_probability": 0.9471776485443115
+        },
+        {
+          "risk_level": "CAUTION",
+          "rows": 11597,
+          "row_rate": 0.12530253263030514,
+          "actual_risk_rate": 0.46969043718202985,
+          "avg_probability": 0.8912104964256287
+        }
+      ],
+      "top_n": [
+        {
+          "top_n": 5,
+          "rows": 1566,
+          "days": 314,
+          "hit_rate": 0.5376756066411239,
+          "mean_daily_hit_rate": 0.5363057324840763,
+          "mean_daily_risk_count": 2.6815286624203822,
+          "mean_future_5d_return": 0.029912742536758578,
+          "mean_future_min_return_1d": -0.07020547473146879
+        },
+        {
+          "top_n": 10,
+          "rows": 3131,
+          "days": 314,
+          "hit_rate": 0.4985627595017566,
+          "mean_daily_hit_rate": 0.49713375796178344,
+          "mean_daily_risk_count": 4.971337579617835,
+          "mean_future_5d_return": 0.029571413499635716,
+          "mean_future_min_return_1d": -0.065526991071209
+        },
+        {
+          "top_n": 20,
+          "rows": 6261,
+          "days": 314,
+          "hit_rate": 0.45759463344513657,
+          "mean_daily_hit_rate": 0.45621019108280253,
+          "mean_daily_risk_count": 9.124203821656051,
+          "mean_future_5d_return": 0.026637247283207554,
+          "mean_future_min_return_1d": -0.061177528291426905
+        }
+      ],
+      "monthly_alert_precision": [
+        {
+          "month": "2025-05",
+          "alerts": 294,
+          "actual_risks": 83,
+          "precision": 0.282312925170068
+        },
+        {
+          "month": "2025-06",
+          "alerts": 822,
+          "actual_risks": 225,
+          "precision": 0.2737226277372263
+        },
+        {
+          "month": "2025-07",
+          "alerts": 581,
+          "actual_risks": 172,
+          "precision": 0.29604130808950085
+        },
+        {
+          "month": "2025-08",
+          "alerts": 244,
+          "actual_risks": 72,
+          "precision": 0.29508196721311475
+        },
+        {
+          "month": "2025-09",
+          "alerts": 431,
+          "actual_risks": 113,
+          "precision": 0.26218097447795824
+        },
+        {
+          "month": "2025-10",
+          "alerts": 675,
+          "actual_risks": 205,
+          "precision": 0.3037037037037037
+        },
+        {
+          "month": "2025-11",
+          "alerts": 788,
+          "actual_risks": 380,
+          "precision": 0.48223350253807107
+        },
+        {
+          "month": "2025-12",
+          "alerts": 466,
+          "actual_risks": 214,
+          "precision": 0.4592274678111588
+        },
+        {
+          "month": "2026-01",
+          "alerts": 832,
+          "actual_risks": 297,
+          "precision": 0.35697115384615385
+        },
+        {
+          "month": "2026-02",
+          "alerts": 1289,
+          "actual_risks": 661,
+          "precision": 0.5128006206361521
+        },
+        {
+          "month": "2026-03",
+          "alerts": 1566,
+          "actual_risks": 839,
+          "precision": 0.5357598978288634
+        },
+        {
+          "month": "2026-04",
+          "alerts": 1104,
+          "actual_risks": 260,
+          "precision": 0.23550724637681159
+        },
+        {
+          "month": "2026-05",
+          "alerts": 1227,
+          "actual_risks": 801,
+          "precision": 0.6528117359413202
+        },
+        {
+          "month": "2026-06",
+          "alerts": 1646,
+          "actual_risks": 1141,
+          "precision": 0.6931956257594167
+        },
+        {
+          "month": "2026-07",
+          "alerts": 1672,
+          "actual_risks": 1231,
+          "precision": 0.736244019138756
+        },
+        {
+          "month": "2026-08",
+          "alerts": 311,
+          "actual_risks": 109,
+          "precision": 0.3504823151125402
+        }
+      ],
+      "stock_alert_summary": [
+        {
+          "stock_code": "010170",
+          "alerts": 224,
+          "actual_risks": 138,
+          "precision": 0.6160714285714286
+        },
+        {
+          "stock_code": "007810",
+          "alerts": 184,
+          "actual_risks": 78,
+          "precision": 0.42391304347826086
+        },
+        {
+          "stock_code": "108490",
+          "alerts": 176,
+          "actual_risks": 79,
+          "precision": 0.44886363636363635
+        },
+        {
+          "stock_code": "402340",
+          "alerts": 169,
+          "actual_risks": 86,
+          "precision": 0.5088757396449705
+        },
+        {
+          "stock_code": "043260",
+          "alerts": 168,
+          "actual_risks": 87,
+          "precision": 0.5178571428571429
+        },
+        {
+          "stock_code": "347850",
+          "alerts": 166,
+          "actual_risks": 92,
+          "precision": 0.5542168674698795
+        },
+        {
+          "stock_code": "089970",
+          "alerts": 158,
+          "actual_risks": 78,
+          "precision": 0.4936708860759494
+        },
+        {
+          "stock_code": "030530",
+          "alerts": 152,
+          "actual_risks": 68,
+          "precision": 0.4473684210526316
+        },
+        {
+          "stock_code": "440110",
+          "alerts": 151,
+          "actual_risks": 64,
+          "precision": 0.423841059602649
+        },
+        {
+          "stock_code": "353200",
+          "alerts": 149,
+          "actual_risks": 67,
+          "precision": 0.44966442953020136
+        },
+        {
+          "stock_code": "420770",
+          "alerts": 146,
+          "actual_risks": 57,
+          "precision": 0.3904109589041096
+        },
+        {
+          "stock_code": "319660",
+          "alerts": 145,
+          "actual_risks": 76,
+          "precision": 0.5241379310344828
+        },
+        {
+          "stock_code": "445680",
+          "alerts": 141,
+          "actual_risks": 60,
+          "precision": 0.425531914893617
+        },
+        {
+          "stock_code": "475830",
+          "alerts": 139,
+          "actual_risks": 81,
+          "precision": 0.5827338129496403
+        },
+        {
+          "stock_code": "323280",
+          "alerts": 138,
+          "actual_risks": 80,
+          "precision": 0.5797101449275363
+        },
+        {
+          "stock_code": "319400",
+          "alerts": 137,
+          "actual_risks": 75,
+          "precision": 0.5474452554744526
+        },
+        {
+          "stock_code": "322000",
+          "alerts": 134,
+          "actual_risks": 80,
+          "precision": 0.5970149253731343
+        },
+        {
+          "stock_code": "347700",
+          "alerts": 132,
+          "actual_risks": 76,
+          "precision": 0.5757575757575758
+        },
+        {
+          "stock_code": "131290",
+          "alerts": 131,
+          "actual_risks": 53,
+          "precision": 0.40458015267175573
+        },
+        {
+          "stock_code": "032820",
+          "alerts": 130,
+          "actual_risks": 79,
+          "precision": 0.6076923076923076
+        },
+        {
+          "stock_code": "290650",
+          "alerts": 129,
+          "actual_risks": 68,
+          "precision": 0.5271317829457365
+        },
+        {
+          "stock_code": "356860",
+          "alerts": 129,
+          "actual_risks": 57,
+          "precision": 0.4418604651162791
+        },
+        {
+          "stock_code": "218410",
+          "alerts": 127,
+          "actual_risks": 72,
+          "precision": 0.5669291338582677
+        },
+        {
+          "stock_code": "437730",
+          "alerts": 125,
+          "actual_risks": 71,
+          "precision": 0.568
+        },
+        {
+          "stock_code": "127120",
+          "alerts": 125,
+          "actual_risks": 42,
+          "precision": 0.336
+        },
+        {
+          "stock_code": "080220",
+          "alerts": 124,
+          "actual_risks": 63,
+          "precision": 0.5080645161290323
+        },
+        {
+          "stock_code": "031980",
+          "alerts": 120,
+          "actual_risks": 67,
+          "precision": 0.5583333333333333
+        },
+        {
+          "stock_code": "067310",
+          "alerts": 119,
+          "actual_risks": 55,
+          "precision": 0.46218487394957986
+        },
+        {
+          "stock_code": "047040",
+          "alerts": 118,
+          "actual_risks": 69,
+          "precision": 0.5847457627118644
+        },
+        {
+          "stock_code": "058610",
+          "alerts": 118,
+          "actual_risks": 58,
+          "precision": 0.4915254237288136
+        }
+      ]
+    }
+  },
+  "threshold_selection": {
+    "source": "validation",
+    "selection_rule": "precision_at_least_0.40",
+    "min_caution_precision": 0.4,
+    "optimization_metric": "f1",
+    "threshold_min": 0.05,
+    "threshold_max": 0.95,
+    "threshold_step": 0.01,
+    "selected_threshold": 0.86,
+    "danger_threshold": 0.93,
+    "validation_curve": [
+      {
+        "accuracy": 0.15308743015183157,
+        "precision": 0.14660884402104365,
+        "recall": 1.0,
+        "f1": 0.2557259954613658,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.05
+      },
+      {
+        "accuracy": 0.1557543602189987,
+        "precision": 0.1469938265444332,
+        "recall": 0.9999030161962952,
+        "f1": 0.256308266003729,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.06
+      },
+      {
+        "accuracy": 0.15829429361630074,
+        "precision": 0.14736195091270352,
+        "recall": 0.9998060323925905,
+        "f1": 0.25686450391189514,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.07
+      },
+      {
+        "accuracy": 0.1611023310944291,
+        "precision": 0.14773183460457648,
+        "recall": 0.9993211133740665,
+        "f1": 0.25741016000699485,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.08
+      },
+      {
+        "accuracy": 0.16386803634926905,
+        "precision": 0.14809755255816628,
+        "recall": 0.9988361943555426,
+        "f1": 0.2579489812530525,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.09
+      },
+      {
+        "accuracy": 0.1669865101315121,
+        "precision": 0.14853927721272453,
+        "recall": 0.9985452429444283,
+        "f1": 0.2586089970612614,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.1
+      },
+      {
+        "accuracy": 0.16999209798498618,
+        "precision": 0.1489463324263301,
+        "recall": 0.9980603239259044,
+        "f1": 0.2592093497726786,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.11
+      },
+      {
+        "accuracy": 0.17363266918778575,
+        "precision": 0.14947405125820887,
+        "recall": 0.99776937251479,
+        "f1": 0.25999823096071467,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.12
+      },
+      {
+        "accuracy": 0.17723090816729695,
+        "precision": 0.14994821827092783,
+        "recall": 0.9969935020851518,
+        "f1": 0.2606887457523964,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.13
+      },
+      {
+        "accuracy": 0.18101258678105775,
+        "precision": 0.15050598245536956,
+        "recall": 0.9967025506740375,
+        "f1": 0.2615212357177393,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.14
+      },
+      {
+        "accuracy": 0.1847801546537224,
+        "precision": 0.15106601970298486,
+        "recall": 0.9964115992629231,
+        "f1": 0.26235620076352445,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.15
+      },
+      {
+        "accuracy": 0.1889428232770785,
+        "precision": 0.15166240786966603,
+        "recall": 0.9958296964406944,
+        "f1": 0.26323480400953675,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.16
+      },
+      {
+        "accuracy": 0.193034938194954,
+        "precision": 0.15227357020992507,
+        "recall": 0.9954417612258752,
+        "f1": 0.26414123217870195,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.17
+      },
+      {
+        "accuracy": 0.1971270531128295,
+        "precision": 0.1528487756896526,
+        "recall": 0.994665890796237,
+        "f1": 0.2649786849244284,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.18
+      },
+      {
+        "accuracy": 0.2015578258170119,
+        "precision": 0.15351553725196557,
+        "recall": 0.9941809717777131,
+        "f1": 0.26596269102041875,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.19
+      },
+      {
+        "accuracy": 0.20579104814584862,
+        "precision": 0.15414591577268555,
+        "recall": 0.9935990689554844,
+        "f1": 0.2668872274467919,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.2
+      },
+      {
+        "accuracy": 0.21060281085962634,
+        "precision": 0.15483646485734168,
+        "recall": 0.9926292309184366,
+        "f1": 0.2678863544161334,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.21
+      },
+      {
+        "accuracy": 0.21500536208161652,
+        "precision": 0.15544506279840647,
+        "recall": 0.9914654252739793,
+        "f1": 0.2687540255267689,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.22
+      },
+      {
+        "accuracy": 0.21963368516114468,
+        "precision": 0.15610859728506787,
+        "recall": 0.9903986034332266,
+        "f1": 0.2697056532016322,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.23
+      },
+      {
+        "accuracy": 0.224516001580403,
+        "precision": 0.15687540348612009,
+        "recall": 0.9898167006109979,
+        "f1": 0.27082752855948733,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.24
+      },
+      {
+        "accuracy": 0.2293700965174691,
+        "precision": 0.15762465609446968,
+        "recall": 0.9890408301813597,
+        "f1": 0.2719140369822288,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.25
+      },
+      {
+        "accuracy": 0.23446407405316927,
+        "precision": 0.15836041611594023,
+        "recall": 0.9876830569294928,
+        "f1": 0.27295631198070225,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.26
+      },
+      {
+        "accuracy": 0.23976971270531128,
+        "precision": 0.15916381104382793,
+        "recall": 0.9865192512850354,
+        "f1": 0.27410401509027216,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.27
+      },
+      {
+        "accuracy": 0.24528701247389512,
+        "precision": 0.16000441000441,
+        "recall": 0.9852584618368733,
+        "f1": 0.27530046204083847,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.28
+      },
+      {
+        "accuracy": 0.25108652706440143,
+        "precision": 0.1608533587120311,
+        "recall": 0.9835127533701872,
+        "f1": 0.27648726757184144,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.29
+      },
+      {
+        "accuracy": 0.25646271942202403,
+        "precision": 0.16168018391979053,
+        "recall": 0.9821549801183203,
+        "f1": 0.27765363894334244,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.3
+      },
+      {
+        "accuracy": 0.26226223401253035,
+        "precision": 0.1624768797748291,
+        "recall": 0.9797303850257008,
+        "f1": 0.2787296857324173,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.31
+      },
+      {
+        "accuracy": 0.268682621211266,
+        "precision": 0.16352201257861634,
+        "recall": 0.9783726117738337,
+        "f1": 0.28021054678277296,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.32
+      },
+      {
+        "accuracy": 0.2761330925100186,
+        "precision": 0.16478016226118816,
+        "recall": 0.9770148385219668,
+        "f1": 0.28199924419499767,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.33
+      },
+      {
+        "accuracy": 0.2819184963594288,
+        "precision": 0.1657055295590852,
+        "recall": 0.9753661138589855,
+        "f1": 0.2832838049096517,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.34
+      },
+      {
+        "accuracy": 0.28901619913077836,
+        "precision": 0.16678030366021984,
+        "recall": 0.9726505673552517,
+        "f1": 0.2847368122196355,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.35
+      },
+      {
+        "accuracy": 0.29631145227747363,
+        "precision": 0.1679258587690138,
+        "recall": 0.9700320046552225,
+        "f1": 0.28629084195612037,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.36
+      },
+      {
+        "accuracy": 0.3041711350680138,
+        "precision": 0.16921954777534645,
+        "recall": 0.9675104257588982,
+        "f1": 0.28805728805728803,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.37
+      },
+      {
+        "accuracy": 0.3112406163571711,
+        "precision": 0.1703541338447839,
+        "recall": 0.9647948792551644,
+        "f1": 0.2895774811882341,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.38
+      },
+      {
+        "accuracy": 0.3190015239600384,
+        "precision": 0.1715878015853785,
+        "recall": 0.9614974299292018,
+        "f1": 0.2912070965941635,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.39
+      },
+      {
+        "accuracy": 0.32749619009990405,
+        "precision": 0.17302843535509174,
+        "recall": 0.9583939482106488,
+        "f1": 0.29313439034157485,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.4
+      },
+      {
+        "accuracy": 0.3366117288479991,
+        "precision": 0.17461612113904748,
+        "recall": 0.9550964988846863,
+        "f1": 0.29525251465319524,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.41
+      },
+      {
+        "accuracy": 0.3459812609358244,
+        "precision": 0.1763247709717981,
+        "recall": 0.9519930171661333,
+        "f1": 0.29754020096694506,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.42
+      },
+      {
+        "accuracy": 0.35633854490037814,
+        "precision": 0.1783527696793003,
+        "recall": 0.9492774706623994,
+        "f1": 0.3002868494117286,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.43
+      },
+      {
+        "accuracy": 0.36648416774849013,
+        "precision": 0.18017718100945088,
+        "recall": 0.9448162156919795,
+        "f1": 0.30264057160608887,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.44
+      },
+      {
+        "accuracy": 0.3765451261500254,
+        "precision": 0.18188136293624854,
+        "recall": 0.9390941712733973,
+        "f1": 0.3047412233079986,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.45
+      },
+      {
+        "accuracy": 0.38793249421459614,
+        "precision": 0.18419896468071287,
+        "recall": 0.9352148191252061,
+        "f1": 0.30777823880501737,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.46
+      },
+      {
+        "accuracy": 0.3996302985832816,
+        "precision": 0.18648122933281464,
+        "recall": 0.9297837261177383,
+        "f1": 0.31065601659078756,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.47
+      },
+      {
+        "accuracy": 0.4118360896314274,
+        "precision": 0.18892172222993475,
+        "recall": 0.9238677140917467,
+        "f1": 0.31369578819112853,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.48
+      },
+      {
+        "accuracy": 0.4237455551165547,
+        "precision": 0.1914657071819854,
+        "recall": 0.9186305886916885,
+        "f1": 0.31688468100766115,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.49
+      },
+      {
+        "accuracy": 0.4366709939606028,
+        "precision": 0.19408227782713805,
+        "recall": 0.9109688681990108,
+        "f1": 0.3199904612659263,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.5
+      },
+      {
+        "accuracy": 0.4495541005813625,
+        "precision": 0.19702280405405406,
+        "recall": 0.9049558723693143,
+        "f1": 0.3235941807841029,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.51
+      },
+      {
+        "accuracy": 0.46283230795281366,
+        "precision": 0.20008643976229065,
+        "recall": 0.89797303850257,
+        "f1": 0.32725409111794435,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.52
+      },
+      {
+        "accuracy": 0.47694304904893603,
+        "precision": 0.20348411977215808,
+        "recall": 0.8904083018135971,
+        "f1": 0.33126465812736783,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.53
+      },
+      {
+        "accuracy": 0.4916464412710956,
+        "precision": 0.20701834339751624,
+        "recall": 0.8810978566579382,
+        "f1": 0.3352645951730755,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.54
+      },
+      {
+        "accuracy": 0.5061946153411977,
+        "precision": 0.21071629476842302,
+        "recall": 0.8718843953059839,
+        "f1": 0.3394053798961774,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.55
+      },
+      {
+        "accuracy": 0.5212931083140486,
+        "precision": 0.21472407461099835,
+        "recall": 0.8618950635243914,
+        "f1": 0.3437977523743206,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.56
+      },
+      {
+        "accuracy": 0.5358977253485353,
+        "precision": 0.21857160663093606,
+        "recall": 0.8503539908835225,
+        "f1": 0.3477571094276762,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.57
+      },
+      {
+        "accuracy": 0.5505305638652142,
+        "precision": 0.22249703715154326,
+        "recall": 0.8375521287944914,
+        "f1": 0.35159287531806616,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.58
+      },
+      {
+        "accuracy": 0.5655161709092962,
+        "precision": 0.22712252838032299,
+        "recall": 0.826592958975851,
+        "f1": 0.35633505445575603,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.59
+      },
+      {
+        "accuracy": 0.5796974657108991,
+        "precision": 0.23122360539898976,
+        "recall": 0.8124333236349529,
+        "f1": 0.3599914052428019,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.6
+      },
+      {
+        "accuracy": 0.5951063949878648,
+        "precision": 0.23606604450825555,
+        "recall": 0.7973038502570071,
+        "f1": 0.364276852180078,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.61
+      },
+      {
+        "accuracy": 0.6094005757182367,
+        "precision": 0.2406068932560779,
+        "recall": 0.7813015226457182,
+        "f1": 0.36791268010869316,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.62
+      },
+      {
+        "accuracy": 0.6231303268047638,
+        "precision": 0.2450160171679159,
+        "recall": 0.7640384055862671,
+        "f1": 0.37104370761115296,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.63
+      },
+      {
+        "accuracy": 0.6365496415871762,
+        "precision": 0.24941596365996108,
+        "recall": 0.7455144990786539,
+        "f1": 0.37378133281466536,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.64
+      },
+      {
+        "accuracy": 0.6492351978325902,
+        "precision": 0.25361606991633073,
+        "recall": 0.7261177383376975,
+        "f1": 0.37592890138582047,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.65
+      },
+      {
+        "accuracy": 0.6633318281876164,
+        "precision": 0.2586747417171357,
+        "recall": 0.704199398700417,
+        "f1": 0.3783642948333811,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.66
+      },
+      {
+        "accuracy": 0.6769486933453746,
+        "precision": 0.2645308581908006,
+        "recall": 0.6854815245853942,
+        "f1": 0.3817445314609776,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.67
+      },
+      {
+        "accuracy": 0.6892250380990009,
+        "precision": 0.2692747114210298,
+        "recall": 0.6628842983221802,
+        "f1": 0.38297753123774303,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.68
+      },
+      {
+        "accuracy": 0.7022210306485297,
+        "precision": 0.2748289100317142,
+        "recall": 0.6387353311996896,
+        "f1": 0.38430342815463164,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.69
+      },
+      {
+        "accuracy": 0.7147654794829824,
+        "precision": 0.2806838818266377,
+        "recall": 0.6145863640771991,
+        "f1": 0.3853685234736074,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.7
+      },
+      {
+        "accuracy": 0.7284105661229328,
+        "precision": 0.28908610271903323,
+        "recall": 0.5939288138880807,
+        "f1": 0.38888712494046673,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.71
+      },
+      {
+        "accuracy": 0.740080149009426,
+        "precision": 0.2949476558944015,
+        "recall": 0.5656095432062845,
+        "f1": 0.3877143996808935,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.72
+      },
+      {
+        "accuracy": 0.7514251848507083,
+        "precision": 0.3011379103827517,
+        "recall": 0.5364174182911454,
+        "f1": 0.3857312225399261,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.73
+      },
+      {
+        "accuracy": 0.7621493480837613,
+        "precision": 0.30766970320305614,
+        "recall": 0.5077102123945301,
+        "f1": 0.3831515772524336,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.74
+      },
+      {
+        "accuracy": 0.7721538635209121,
+        "precision": 0.3143765903307888,
+        "recall": 0.4792939579090292,
+        "f1": 0.37970112558103797,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.75
+      },
+      {
+        "accuracy": 0.7814246204210645,
+        "precision": 0.31963502124399246,
+        "recall": 0.44505867520124137,
+        "f1": 0.3720609696773147,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.76
+      },
+      {
+        "accuracy": 0.791273917706158,
+        "precision": 0.32801105396484226,
+        "recall": 0.4144117932305305,
+        "f1": 0.36618390607592766,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.77
+      },
+      {
+        "accuracy": 0.7993311508720438,
+        "precision": 0.3336736430151438,
+        "recall": 0.3803704781301523,
+        "f1": 0.35549512803081806,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.78
+      },
+      {
+        "accuracy": 0.8065981825365468,
+        "precision": 0.33880922989269774,
+        "recall": 0.34603821161865966,
+        "f1": 0.3423855676038768,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.79
+      },
+      {
+        "accuracy": 0.8133854490037816,
+        "precision": 0.3452962412401784,
+        "recall": 0.3153913296479488,
+        "f1": 0.3296669876831061,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.8
+      },
+      {
+        "accuracy": 0.8197493932381329,
+        "precision": 0.352461962381694,
+        "recall": 0.2853263504994666,
+        "f1": 0.31536070318362097,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.81
+      },
+      {
+        "accuracy": 0.8254783541231585,
+        "precision": 0.3597818677573279,
+        "recall": 0.25594025797691783,
+        "f1": 0.29910461294344326,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.82
+      },
+      {
+        "accuracy": 0.8303606705424169,
+        "precision": 0.3656353070519868,
+        "recall": 0.22577829502473087,
+        "f1": 0.27917016428828395,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.83
+      },
+      {
+        "accuracy": 0.8355816447479821,
+        "precision": 0.3772652388797364,
+        "recall": 0.19988361943555427,
+        "f1": 0.2613160897679726,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.84
+      },
+      {
+        "accuracy": 0.8402805215329909,
+        "precision": 0.3925373134328358,
+        "recall": 0.17854718262050237,
+        "f1": 0.24545030331311246,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.85
+      },
+      {
+        "accuracy": 0.8438928712535982,
+        "precision": 0.40595297648824413,
+        "recall": 0.15740471341286005,
+        "f1": 0.22685023411838703,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.86
+      },
+      {
+        "accuracy": 0.8464892476152848,
+        "precision": 0.4152238805970149,
+        "recall": 0.13490447095335079,
+        "f1": 0.20364541395212649,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.87
+      },
+      {
+        "accuracy": 0.8489162950838178,
+        "precision": 0.42747252747252745,
+        "recall": 0.11318009892347979,
+        "f1": 0.1789740050609616,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.88
+      },
+      {
+        "accuracy": 0.8513151210701586,
+        "precision": 0.44868301544050865,
+        "recall": 0.09581999806032393,
+        "f1": 0.15791576760169423,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.89
+      },
+      {
+        "accuracy": 0.8528531918496359,
+        "precision": 0.46572934973637964,
+        "recall": 0.07710212394530114,
+        "f1": 0.1323015476784823,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.9
+      },
+      {
+        "accuracy": 0.8539820511373257,
+        "precision": 0.48511665325824616,
+        "recall": 0.05848123363398312,
+        "f1": 0.1043794356932664,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.91
+      },
+      {
+        "accuracy": 0.8546170344866513,
+        "precision": 0.5044444444444445,
+        "recall": 0.04403064688197071,
+        "f1": 0.08099188297208099,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.92
+      },
+      {
+        "accuracy": 0.8548569170852853,
+        "precision": 0.5209380234505863,
+        "recall": 0.030161962952186986,
+        "f1": 0.057022368903557025,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.93
+      },
+      {
+        "accuracy": 0.8545464807811707,
+        "precision": 0.5039370078740157,
+        "recall": 0.01862089031131801,
+        "f1": 0.03591470258136925,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.94
+      },
+      {
+        "accuracy": 0.8546170344866513,
+        "precision": 0.5185185185185185,
+        "recall": 0.010862186014935505,
+        "f1": 0.021278616889902156,
+        "roc_auc": 0.7408794637763779,
+        "threshold": 0.95
+      }
+    ]
+  },
+  "walk_forward_validation": {
+    "fold_count": 3,
+    "configured_folds": 3,
+    "min_train_ratio": 0.5,
+    "purge_gap_days": 5,
+    "summary": {
+      "accuracy": 0.8182199768475639,
+      "precision": 0.4183913018099479,
+      "recall": 0.3362291534686373,
+      "f1": 0.3225246513841265,
+      "roc_auc": 0.7560894859120214
+    },
+    "folds": [
+      {
+        "fold": "fold_1",
+        "threshold": 0.86,
+        "threshold_selection_rule": "precision_at_least_0.40",
+        "metrics": {
+          "accuracy": 0.898620218579235,
+          "precision": 0.41183574879227053,
+          "recall": 0.19950270586514554,
+          "f1": 0.26879495516799684,
+          "roc_auc": 0.7779563114902819,
+          "threshold": 0.86
+        },
+        "rows": {
+          "train": 201616,
+          "validation": 73200,
+          "train_positive": 17307,
+          "validation_positive": 6837
+        },
+        "dates": {
+          "train_start": "2020-03-27",
+          "train_end": "2023-05-24",
+          "validation_start": "2023-06-02",
+          "validation_end": "2024-06-26"
+        },
+        "purged_dates": [
+          "2023-05-25",
+          "2023-05-26",
+          "2023-05-30",
+          "2023-05-31",
+          "2023-06-01"
+        ]
+      },
+      {
+        "fold": "fold_2",
+        "threshold": 0.89,
+        "threshold_selection_rule": "precision_at_least_0.40",
+        "metrics": {
+          "accuracy": 0.8535921097860864,
+          "precision": 0.41544256120527306,
+          "recall": 0.10381176470588235,
+          "f1": 0.1661144578313253,
+          "roc_auc": 0.7218816059412552,
+          "threshold": 0.89
+        },
+        "rows": {
+          "train": 274768,
+          "validation": 75638,
+          "train_positive": 24000,
+          "validation_positive": 10625
+        },
+        "dates": {
+          "train_start": "2020-03-27",
+          "train_end": "2024-06-19",
+          "validation_start": "2024-06-27",
+          "validation_end": "2025-07-24"
+        },
+        "purged_dates": [
+          "2024-06-20",
+          "2024-06-21",
+          "2024-06-24",
+          "2024-06-25",
+          "2024-06-26"
+        ]
+      },
+      {
+        "fold": "fold_3",
+        "threshold": 0.77,
+        "threshold_selection_rule": "precision_at_least_0.40",
+        "metrics": {
+          "accuracy": 0.7024476021773703,
+          "precision": 0.42789559543230016,
+          "recall": 0.7053729898348841,
+          "f1": 0.5326645411530573,
+          "roc_auc": 0.768430540304527,
+          "threshold": 0.77
+        },
+        "rows": {
+          "train": 350366,
+          "validation": 77341,
+          "train_positive": 34664,
+          "validation_positive": 18593
+        },
+        "dates": {
+          "train_start": "2020-03-27",
+          "train_end": "2025-07-17",
+          "validation_start": "2025-07-25",
+          "validation_end": "2026-08-21"
+        },
+        "purged_dates": [
+          "2025-07-18",
+          "2025-07-21",
+          "2025-07-22",
+          "2025-07-23",
+          "2025-07-24"
+        ]
+      }
+    ]
+  },
+  "rows": {
+    "total": 429172,
+    "train": 262878,
+    "validation": 70868,
+    "test": 92552,
+    "train_positive": 22980,
+    "train_negative": 239898,
+    "validation_positive": 10311,
+    "validation_negative": 60557,
+    "test_positive": 19858,
+    "test_negative": 72694,
+    "scale_pos_weight": 15.659138381201046,
+    "positive_class_weight_factor": 1.5
+  },
+  "dates": {
+    "train_start": "2020-03-27",
+    "train_end": "2024-04-16",
+    "validation_start": "2024-04-24",
+    "validation_end": "2025-04-29",
+    "test_start": "2025-05-12",
+    "test_end": "2026-08-21"
+  },
+  "split": {
+    "purge_gap_days": 5,
+    "validation_split_date": "2024-04-24",
+    "test_split_date": "2025-05-12",
+    "train_validation_purged_dates": [
+      "2024-04-17",
+      "2024-04-18",
+      "2024-04-19",
+      "2024-04-22",
+      "2024-04-23"
+    ],
+    "validation_test_purged_dates": [
+      "2025-04-30",
+      "2025-05-02",
+      "2025-05-07",
+      "2025-05-08",
+      "2025-05-09"
+    ]
+  },
+  "feature_columns": [
+    "return_1d",
+    "return_3d",
+    "return_5d",
+    "return_10d",
+    "return_20d",
+    "gap_open",
+    "intraday_range",
+    "close_position",
+    "ma5_gap",
+    "ma20_gap",
+    "ma60_gap",
+    "trend_strength_5_20",
+    "volatility_5d",
+    "volatility_10d",
+    "volatility_20d",
+    "volatility_ratio_5_20",
+    "volume_change_1d",
+    "volume_ratio_5d",
+    "volume_ratio_20d",
+    "down_days_5d",
+    "down_days_10d",
+    "price_volume_shock",
+    "downside_volume_shock",
+    "rsi_14",
+    "rsi_change_3d",
+    "macd",
+    "macd_signal",
+    "macd_hist",
+    "macd_cross",
+    "bollinger_width",
+    "bollinger_position",
+    "drawdown_20d",
+    "z_score",
+    "ewma_value",
+    "cusum_pos",
+    "cusum_neg",
+    "anomaly_score"
+  ],
+  "model_params": {
+    "n_estimators": 500,
+    "max_depth": 2,
+    "learning_rate": 0.05,
+    "min_child_weight": 5.0,
+    "gamma": 0.5,
+    "decision_threshold": 0.86,
+    "danger_threshold": 0.93,
+    "validation_ratio": 0.2,
+    "test_ratio": 0.2,
+    "purge_gap_days": 5,
+    "walk_forward_folds": 3
+  }
+}

@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.cache/
+.streamlit/secrets.toml
+frontend/node_modules/
+frontend/dist/
+
+# Keep only the deployment-time data file. The app downloads price data live.
+data/processed/*
+!data/processed/stock_info.csv
+
+# Keep only the latest deployment model.
+models/*
+!models/xgboost_risk_model_latest.joblib
+
+# Local database/import artifacts are not needed on Streamlit Cloud.
+data/mysql_import_ready/
+database/*.log
