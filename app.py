@@ -47,6 +47,9 @@ RAW_DIR = Path("data/raw")
 FRONTEND_DIST = Path("frontend/dist")
 FRONTEND_INDEX = FRONTEND_DIST / "index.html"
 START_DATE = "2020-01-01"
+PRICE_SOURCE = os.getenv("PRICE_SOURCE", "cache").strip().lower()
+DART_ANALYZE_DOCUMENTS = os.getenv("DART_ANALYZE_DOCUMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
+PRELOAD_CACHE = os.getenv("PRELOAD_CACHE", "1").strip().lower() in {"1", "true", "yes", "on"}
 
 LEVEL_TEXT = {
     "NORMAL": "보통",
@@ -110,6 +113,18 @@ app.add_middleware(
 )
 
 
+@app.on_event("startup")
+def preload_common_data() -> None:
+    if not PRELOAD_CACHE:
+        return
+    try:
+        stock_listing()
+        top_risks_from_csv(10)
+        thresholds()
+    except Exception:
+        pass
+
+
 def clean_value(value: Any) -> Any:
     if pd.isna(value):
         return None
@@ -124,6 +139,30 @@ def clean_value(value: Any) -> Any:
 
 def records(frame: pd.DataFrame) -> list[dict[str, Any]]:
     return [{key: clean_value(value) for key, value in row.items()} for row in frame.to_dict(orient="records")]
+
+
+def file_signature(path: Path) -> tuple[str, float, int]:
+    if not path.exists():
+        return (str(path), 0.0, 0)
+    stat = path.stat()
+    return (str(path), stat.st_mtime, stat.st_size)
+
+
+@lru_cache(maxsize=16)
+def cached_csv(path_text: str, mtime: float, size: int, columns: tuple[str, ...] | None = None) -> pd.DataFrame:
+    path = Path(path_text)
+    if not path.exists():
+        return pd.DataFrame()
+    read_kwargs: dict[str, Any] = {"encoding": "utf-8-sig"}
+    if columns:
+        read_kwargs["usecols"] = list(columns)
+    if "stock_code" in (columns or ()):
+        read_kwargs["dtype"] = {"stock_code": str}
+    if path.name == "prediction_result.csv":
+        read_kwargs["dtype"] = {"stock_code": str}
+    if path.name == "stock_info.csv":
+        read_kwargs["dtype"] = {"code": str}
+    return pd.read_csv(path, **read_kwargs)
 
 
 def dart_api_key() -> str:
@@ -411,7 +450,11 @@ def recent_disclosures(
         report_name = str(item.get("report_nm", ""))
         receipt_no = str(item.get("rcept_no", ""))
         tags = dart_risk_tags(report_name)
-        analysis = analyze_disclosure_content(report_name, receipt_no, key) if receipt_no and index < 3 else None
+        analysis = (
+            analyze_disclosure_content(report_name, receipt_no, key)
+            if DART_ANALYZE_DOCUMENTS and receipt_no and index < 3
+            else None
+        )
         if analysis and analysis.get("matched_categories"):
             tags = sorted(set(tags) | set(analysis["matched_categories"]))
         items.append(
@@ -468,7 +511,7 @@ def market_index_context(date_value: Any, stock_return: float | None = None) -> 
     if not MARKET_INDEX_FILE.exists():
         return {"available": False}
 
-    index_frame = pd.read_csv(MARKET_INDEX_FILE, encoding="utf-8-sig")
+    index_frame = cached_csv(*file_signature(MARKET_INDEX_FILE))
     if index_frame.empty:
         return {"available": False}
 
@@ -497,18 +540,17 @@ def market_index_context(date_value: Any, stock_return: float | None = None) -> 
     }
 
 
+@lru_cache(maxsize=512)
 def market_context_for_date(date_value: Any, stock_code: str | None = None) -> dict[str, Any]:
     context_file = MARKET_CONTEXT_FILE if MARKET_CONTEXT_FILE.exists() else FEATURE_FILE
     if not context_file.exists():
         return {"available": False}
 
     target_date = pd.Timestamp(date_value).date().isoformat()
-    features = pd.read_csv(
-        context_file,
-        dtype={"stock_code": str},
-        usecols=["date", "stock_code", "sector", "return_1d"],
-        encoding="utf-8-sig",
-    )
+    features = cached_csv(
+        *file_signature(context_file),
+        ("date", "stock_code", "sector", "return_1d"),
+    ).copy()
     features["date"] = pd.to_datetime(features["date"], errors="coerce").dt.date.astype(str)
     day = features[features["date"] == target_date].copy()
     day["return_1d"] = pd.to_numeric(day["return_1d"], errors="coerce")
@@ -529,12 +571,10 @@ def market_context_for_date(date_value: Any, stock_code: str | None = None) -> d
     risk_signal_ratio = None
     prediction_day = pd.DataFrame()
     if PREDICTION_FILE.exists():
-        predictions = pd.read_csv(
-            PREDICTION_FILE,
-            dtype={"stock_code": str},
-            usecols=["trade_date", "stock_code", "risk_level"],
-            encoding="utf-8-sig",
-        )
+        predictions = cached_csv(
+            *file_signature(PREDICTION_FILE),
+            ("trade_date", "stock_code", "risk_level"),
+        ).copy()
         predictions["trade_date"] = pd.to_datetime(predictions["trade_date"], errors="coerce").dt.date.astype(str)
         prediction_day = predictions[predictions["trade_date"] == target_date]
         if not prediction_day.empty:
@@ -707,7 +747,7 @@ def stock_listing() -> pd.DataFrame:
     if not STOCK_INFO_FILE.exists():
         raise RuntimeError(f"Stock info file does not exist: {STOCK_INFO_FILE}")
 
-    local = pd.read_csv(STOCK_INFO_FILE, dtype={"code": str}, encoding="utf-8-sig")
+    local = cached_csv(*file_signature(STOCK_INFO_FILE)).copy()
     local = local.rename(columns={"code": "Code", "name": "Name", "market": "Market", "sector": "Sector"})
     if "Sector" not in local.columns:
         local["Sector"] = "기타"
@@ -769,11 +809,15 @@ def load_cached_price(ticker: str) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
 
-    frame = pd.read_csv(path, encoding="utf-8-sig")
+    frame = cached_csv(*file_signature(path)).copy()
     return normalize_price_frame(frame, ticker)
 
 
 def download_price(ticker: str) -> pd.DataFrame:
+    cached = load_cached_price(ticker)
+    if PRICE_SOURCE != "live" and not cached.empty:
+        return cached
+
     yf.set_tz_cache_location(str(Path(".cache/yfinance").resolve()))
     try:
         frame = yf.download(
@@ -785,14 +829,15 @@ def download_price(ticker: str) -> pd.DataFrame:
             threads=False,
         )
     except Exception:
-        return load_cached_price(ticker)
+        return cached
 
     normalized = normalize_price_frame(frame, ticker)
     if normalized.empty:
-        return load_cached_price(ticker)
+        return cached
     return normalized
 
 
+@lru_cache(maxsize=128)
 def build_prediction_frame(ticker: str) -> pd.DataFrame:
     price = download_price(ticker)
     if price.empty:
@@ -809,7 +854,6 @@ def build_prediction_frame(ticker: str) -> pd.DataFrame:
     )
     data["risk_level_ko"] = data["risk_level"].map(LEVEL_TEXT)
     data["description"] = data["risk_level"].map(LEVEL_DESCRIPTIONS)
-    data["explanation"] = data.apply(lambda row: explain_prediction(row, feature_context())[0], axis=1)
     return data.sort_values("date").reset_index(drop=True)
 
 
@@ -898,6 +942,7 @@ def predict(ticker: str, days: int = Query(365, ge=30, le=1800)) -> dict[str, An
     selected = result.tail(days).copy()
     latest = selected.tail(1).iloc[0]
     risk_threshold, danger_threshold = thresholds()
+    latest_explanation = explain_prediction(latest, feature_context())[0]
 
     series_columns = ["date", "close", "volume", "risk_probability", "risk_level", "risk_level_ko"]
     recent_columns = [
@@ -932,7 +977,7 @@ def predict(ticker: str, days: int = Query(365, ge=30, le=1800)) -> dict[str, An
             "risk_level": clean_value(latest["risk_level"]),
             "risk_level_ko": clean_value(latest["risk_level_ko"]),
             "description": clean_value(latest["description"]),
-            "explanation": clean_value(latest["explanation"]),
+            "explanation": clean_value(latest_explanation),
             "reasons": selected_reasons(latest),
             "market_context": market_context_for_date(latest["date"], str(stock.iloc[0]["Code"])),
             "disclosures": recent_disclosures(
@@ -953,11 +998,12 @@ def backtest_summary() -> dict[str, Any]:
     return {"available": True, **json.loads(BACKTEST_REPORT_FILE.read_text(encoding="utf-8"))}
 
 
+@lru_cache(maxsize=32)
 def top_risks_from_csv(limit: int) -> dict[str, Any]:
     if not PREDICTION_FILE.exists():
         return {"items": [], "latest_date": None, "source": "csv"}
 
-    predictions = pd.read_csv(PREDICTION_FILE, dtype={"stock_code": str}, encoding="utf-8-sig")
+    predictions = cached_csv(*file_signature(PREDICTION_FILE)).copy()
     if predictions.empty:
         return {"items": [], "latest_date": None, "source": "csv"}
 
