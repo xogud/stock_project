@@ -269,7 +269,12 @@ function BacktestSummary({ data }) {
 }
 
 function MarketContextCard({ context }) {
-  if (!context?.available) return null
+  if (!context?.available) return (
+    <section className="panel market-context">
+      <div className="panel-title"><h3>시장 동반 변동</h3><span>{context?.date || ''}</span></div>
+      <p className="muted">해당 기준일의 시장 비교 데이터가 없습니다.</p>
+    </section>
+  )
   const index = context.index
   const sector = context.sector
   return (

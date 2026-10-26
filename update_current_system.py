@@ -87,6 +87,9 @@ def run_once(args: argparse.Namespace) -> dict[str, object]:
     status["steps"].append(run_command("sector_mapping", [sys.executable, "apply_sector_mapping.py"], env))
     write_status(status)
 
+    status["steps"].append(run_command("market_context", [sys.executable, "export_market_context.py"], env))
+    write_status(status)
+
     status["steps"].append(
         run_command(
             "daily_backtest",
