@@ -13,8 +13,9 @@ Local accounts, sessions, and watchlists persist in `data/accounts/accounts.sqli
 This file must never be committed or copied into a deployment image.
 The existing anonymous recent-history list remains browser-local; it is not a watchlist.
 
-Users register with a username (3-32 ASCII letters, digits, underscores) and a
-10-128 character password. Usernames are case insensitive. Sessions last seven
+Local users register with a username (3-32 ASCII letters, digits, underscores) and
+a nonempty password without app-specific length limits. Firebase accounts remain
+subject to the project's Firebase password policy. Usernames are case insensitive. Sessions last seven
 days and logout revokes the server-side session. Password reset/email recovery
 and account deletion are not implemented in this version.
 

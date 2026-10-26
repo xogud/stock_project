@@ -41,9 +41,13 @@ def run():
             expect(page.get_by_role("dialog")).to_be_visible()
             expect(page.get_by_label("이메일", exact=True)).to_have_attribute("type", "email")
             page.get_by_role("tab", name="회원가입").click()
+            for label in ("비밀번호", "비밀번호 확인"):
+                field = page.get_by_label(label, exact=True)
+                assert field.get_attribute("minlength") is None
+                assert field.get_attribute("maxlength") is None
             page.get_by_label("이메일", exact=True).fill("test@example.com")
-            page.get_by_label("비밀번호", exact=True).fill("example-password")
-            page.get_by_label("비밀번호 확인", exact=True).fill("different-password")
+            page.get_by_label("비밀번호", exact=True).fill("123456")
+            page.get_by_label("비밀번호 확인", exact=True).fill("654321")
             page.get_by_role("button", name="가입하고 로그인").click()
             expect(page.get_by_role("alert")).to_have_text("비밀번호 확인이 일치하지 않습니다.")
             box = page.get_by_role("dialog").bounding_box()

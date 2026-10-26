@@ -71,9 +71,9 @@ function LoginDialog({ onClose, onAuthenticated, firebaseConfig }) {
           pattern={firebaseConfig ? undefined : '[A-Za-z0-9_]+'} placeholder={firebaseConfig ? 'name@example.com' : '영문, 숫자, 밑줄 3~32자'} disabled={busy} />
         <label htmlFor="account-password">비밀번호</label>
         <input id="account-password" name="password" type="password" autoComplete={registering ? 'new-password' : 'current-password'}
-          required minLength={10} maxLength={128} placeholder="10자 이상" disabled={busy} />
+          required disabled={busy} />
         {registering && <><label htmlFor="account-confirm">비밀번호 확인</label>
-          <input id="account-confirm" name="confirm" type="password" autoComplete="new-password" required minLength={10} maxLength={128} disabled={busy} /></>}
+          <input id="account-confirm" name="confirm" type="password" autoComplete="new-password" required disabled={busy} /></>}
         {error && <p className="account-error" role="alert">{error}</p>}
         <button className="account-primary" type="submit" disabled={busy}>{busy ? '처리 중...' : registering ? '가입하고 로그인' : '로그인'}</button>
       </form>

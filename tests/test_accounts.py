@@ -82,7 +82,14 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(self.register("ALICE").status_code, 409)
         self.assertEqual(self.client.put("/api/watchlist/FAKE", headers=HEADERS).status_code, 404)
         self.assertEqual(self.client.post("/api/auth/login", headers=HEADERS, json={"username": "alice", "password": "wrong-password"}).status_code, 401)
-        self.assertEqual(self.client.post("/api/auth/register", headers=HEADERS, json={"username": "new_user", "password": "1234"}).status_code, 422)
+        self.assertEqual(self.client.post("/api/auth/register", headers=HEADERS, json={"username": "new_user", "password": ""}).status_code, 422)
+
+    def test_nonempty_passwords_without_custom_length_limits(self):
+        for username, password in [("short_user", "1234"), ("long_user", "x" * 256)]:
+            body = {"username": username, "password": password}
+            self.assertEqual(self.client.post("/api/auth/register", headers=HEADERS, json=body).status_code, 201)
+            self.client.post("/api/auth/logout", headers=HEADERS)
+            self.assertEqual(self.client.post("/api/auth/login", headers=HEADERS, json=body).status_code, 200)
 
     def test_csrf_and_expired_session(self):
         self.register()
