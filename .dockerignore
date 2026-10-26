@@ -5,6 +5,12 @@ __pycache__/
 .agents/
 .codex/
 .aws/
+.secrets/
+**/*-firebase-adminsdk-*.json
+**/firebase-service-account.json
+data/accounts/
+.env
+.env.*
 logs/
 frontend/node_modules/
 frontend/dist/

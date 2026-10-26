@@ -5,6 +5,15 @@ services:
     plan: free
     healthCheckPath: /api/health
     envVars:
+      - key: AUTH_PRODUCTION
+        value: "1"
+      - key: AUTH_DB_BACKEND
+        value: firebase
+      - key: STOCK_DB_BACKEND
+        value: firebase
+      # Upload this file through Render Secret Files, never through Git.
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/firebase-service-account.json
       - key: MYSQL_ENABLED
         value: "0"
       - key: DART_ENABLED

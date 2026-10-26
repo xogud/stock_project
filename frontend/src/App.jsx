@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import AccountPanel from './AccountPanel'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 const VIEWED_STOCKS_KEY = 'stock-risk-viewed-stocks'
@@ -95,7 +96,7 @@ function RiskHelpTooltip() {
   )
 }
 
-function SearchPanel({ onSelect, onHome, viewedStocks = [], onClearViewedStocks }) {
+function SearchPanel({ onSelect, onHome, viewedStocks = [], onClearViewedStocks, selected }) {
   const [query, setQuery] = useState('')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(false)
@@ -163,6 +164,8 @@ function SearchPanel({ onSelect, onHome, viewedStocks = [], onClearViewedStocks 
           </div>
         )}
       </div>
+
+      <AccountPanel selected={selected} onSelect={onSelect} />
 
       {viewedStocks.length > 0 && (
         <div className="viewed-section">
@@ -757,6 +760,7 @@ export default function App() {
         onHome={goHome}
         viewedStocks={viewedStocks}
         onClearViewedStocks={clearViewedStocks}
+        selected={selected}
       />
       <div className="main-area">
         {loading && <div className="empty-state">분석 중입니다.</div>}

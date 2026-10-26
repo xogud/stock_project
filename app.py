@@ -28,7 +28,8 @@ except ModuleNotFoundError:
     fdr = None
 
 from anomaly_features import add_anomaly_features
-from database.mysql_repository import mysql_enabled, ping as mysql_ping, stock_listing_frame, table_counts, top_risks_frame
+from database.accounts import create_account_router
+from database.stock_repository import enabled as database_enabled, ping as database_ping, stock_listing_frame, table_counts, top_risks_frame, backend as stock_db_backend
 from model_explanations import explain_prediction, load_feature_context, top_model_factors
 from model_features import FEATURE_COLUMNS
 from price_features import add_price_features
@@ -745,7 +746,7 @@ def thresholds() -> tuple[float, float]:
 
 @lru_cache(maxsize=1)
 def stock_listing() -> pd.DataFrame:
-    if mysql_enabled():
+    if database_enabled():
         try:
             listing = stock_listing_frame()
             if not listing.empty:
@@ -904,7 +905,7 @@ def selected_reasons(row: pd.Series) -> list[dict[str, Any]]:
 @app.get("/api/health")
 def health() -> dict[str, Any]:
     risk_threshold, danger_threshold = thresholds()
-    database = mysql_ping() if mysql_enabled() else {"available": False, "enabled": False, "error": None}
+    database = database_ping() if database_enabled() else {"available": False, "enabled": False, "error": None}
     return {
         "status": "ok",
         "model_exists": MODEL_PATH.exists(),
@@ -917,8 +918,8 @@ def health() -> dict[str, Any]:
 
 @app.get("/api/database/status")
 def database_status() -> dict[str, Any]:
-    status = mysql_ping()
-    status["enabled"] = mysql_enabled()
+    status = database_ping() if database_enabled() else {"available": False, "error": None}
+    status["enabled"] = database_enabled()
     status["table_counts"] = table_counts() if status["available"] else {}
     return status
 
@@ -1059,7 +1060,7 @@ def top_risks(limit: int = Query(10, ge=1, le=50)) -> dict[str, Any]:
     csv_payload = top_risks_from_csv(limit)
     csv_latest = csv_payload.get("latest_date")
 
-    if mysql_enabled():
+    if database_enabled():
         try:
             latest_date, latest = top_risks_frame(limit)
             mysql_is_fresher = (
@@ -1070,7 +1071,7 @@ def top_risks(limit: int = Query(10, ge=1, le=50)) -> dict[str, Any]:
                 latest["risk_level_ko"] = latest["risk_level"].map(LEVEL_TEXT)
                 return {
                     "latest_date": latest_date,
-                    "source": "mysql",
+                    "source": stock_db_backend(),
                     "market_context": market_context_for_date(latest_date),
                     "items": records(latest),
                 }
@@ -1078,6 +1079,20 @@ def top_risks(limit: int = Query(10, ge=1, le=50)) -> dict[str, Any]:
             pass
 
     return csv_payload
+
+
+def account_stock_lookup(ticker: str) -> dict[str, Any] | None:
+    if not STOCK_INFO_FILE.exists():
+        return None
+    listing = cached_csv(*file_signature(STOCK_INFO_FILE))
+    matched = listing[listing["ticker"] == ticker]
+    if matched.empty:
+        return None
+    row = matched.iloc[0]
+    return {key: clean_value(row.get(key)) for key in ("ticker", "code", "name", "market", "sector")}
+
+
+app.include_router(create_account_router(account_stock_lookup))
 
 
 if FRONTEND_DIST.exists():
@@ -1094,7 +1109,9 @@ if FRONTEND_DIST.exists():
         if full_path.startswith("api/"):
             raise HTTPException(status_code=404, detail="API route not found")
 
-        target = FRONTEND_DIST / full_path
+        target = (FRONTEND_DIST / full_path).resolve()
+        if not target.is_relative_to(FRONTEND_DIST.resolve()):
+            raise HTTPException(status_code=404, detail="Not found")
         if target.is_file():
             return FileResponse(target)
         return FileResponse(FRONTEND_INDEX)

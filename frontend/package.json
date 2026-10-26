@@ -4,11 +4,15 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
+    "firebase": "12.10.0",
+    "lucide-react": "^1.61.0",
     "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {}
+    "react-dom": "latest",
+    "vite": "latest"
+  }
 }
