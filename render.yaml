@@ -5,6 +5,12 @@ services:
     plan: free
     healthCheckPath: /api/health
     envVars:
+      - key: PRELOAD_CACHE
+        value: "0"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
       - key: AUTH_PRODUCTION
         value: "1"
       - key: AUTH_DB_BACKEND

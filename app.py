@@ -4,11 +4,13 @@ import json
 import io
 import os
 import re
+import threading
+import tempfile
 import urllib.parse
 import urllib.request
 import zipfile
 import xml.etree.ElementTree as ET
-from functools import lru_cache
+from functools import lru_cache, wraps
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -52,7 +54,20 @@ START_DATE = "2020-01-01"
 PRICE_SOURCE = os.getenv("PRICE_SOURCE", "cache").strip().lower()
 DART_ENABLED = os.getenv("DART_ENABLED", "1").strip().lower() in {"1", "true", "yes", "on"}
 DART_ANALYZE_DOCUMENTS = os.getenv("DART_ANALYZE_DOCUMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
-PRELOAD_CACHE = os.getenv("PRELOAD_CACHE", "1").strip().lower() in {"1", "true", "yes", "on"}
+PRELOAD_CACHE = os.getenv("PRELOAD_CACHE", "0").strip().lower() in {"1", "true", "yes", "on"}
+_dart_lock = threading.Lock()
+_prediction_lock = threading.Lock()
+_csv_lock = threading.Lock()
+
+
+def serialized(lock):
+    def decorate(function):
+        @wraps(function)
+        def run(*args, **kwargs):
+            with lock:
+                return function(*args, **kwargs)
+        return run
+    return decorate
 
 LEVEL_TEXT = {
     "NORMAL": "보통",
@@ -178,6 +193,54 @@ def dart_api_key() -> str:
     return os.getenv("DART_API_KEY", "").strip() or os.getenv("OPENDART_API_KEY", "").strip()
 
 
+@serialized(_csv_lock)
+@lru_cache(maxsize=16)
+def csv_day_rows(path_text, mtime, size, columns, date_column, target_date=None):
+    """Scan bounded chunks, caching only one day's rows, not all price history."""
+    if not Path(path_text).exists():
+        return pd.DataFrame(columns=columns)
+    selected = []
+    latest = None
+    with pd.read_csv(path_text, usecols=list(columns), dtype={"stock_code": str},
+                     encoding="utf-8-sig", chunksize=10000) as chunks:
+        for chunk in chunks:
+            dates = pd.to_datetime(chunk[date_column], errors="coerce").dt.strftime("%Y-%m-%d")
+            if target_date is not None:
+                mask = dates == target_date
+            else:
+                valid = dates.dropna()
+                if valid.empty:
+                    continue
+                chunk_latest = valid.max()
+                if latest is None or chunk_latest > latest:
+                    latest = chunk_latest
+                    selected = []
+                mask = dates == latest
+            if mask.any():
+                selected.append(chunk.loc[mask].copy())
+    return pd.concat(selected, ignore_index=True) if selected else pd.DataFrame(columns=columns)
+
+
+def parse_dart_corp_codes(stream):
+    rows = []
+    events = ET.iterparse(stream, events=("start", "end"))
+    _, root = next(events)
+    for event, item in events:
+        if event != "end" or item.tag != "list":
+            continue
+        code = (item.findtext("stock_code") or "").strip()
+        if code:
+            rows.append({
+                "corp_code": (item.findtext("corp_code") or "").strip(),
+                "corp_name": (item.findtext("corp_name") or "").strip(),
+                "stock_code": code.zfill(6),
+                "modify_date": (item.findtext("modify_date") or "").strip(),
+            })
+        # Clearing the parent releases unlisted-company nodes as we go.
+        root.clear()
+    return pd.DataFrame(rows, columns=["corp_code", "corp_name", "stock_code", "modify_date"])
+
+
 def dart_risk_tags(report_name: str) -> list[str]:
     keyword_map = {
         "실적": ["잠정실적", "매출액", "영업손실", "손익구조", "적자"],
@@ -215,15 +278,19 @@ def compact_text(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
-@lru_cache(maxsize=256)
+@lru_cache(maxsize=8)
 def dart_document_text(receipt_no: str, key: str) -> str:
     params = {"crtfc_key": key, "rcept_no": receipt_no}
     url = "https://opendart.fss.or.kr/api/document.xml?" + urllib.parse.urlencode(params)
     with urllib.request.urlopen(url, timeout=20) as response:
-        payload = response.read()
+        payload = response.read(4 * 1024 * 1024 + 1)
+        if len(payload) > 4 * 1024 * 1024:
+            raise ValueError("DART document archive exceeds memory budget")
 
     text_parts: list[str] = []
     with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        if sum(item.file_size for item in archive.infolist()) > 4 * 1024 * 1024:
+            raise ValueError("DART document exceeds memory budget")
         for xml_name in archive.namelist():
             raw = archive.read(xml_name)
             decoded = None
@@ -242,7 +309,7 @@ def dart_document_text(receipt_no: str, key: str) -> str:
             except ET.ParseError:
                 text_parts.append(re.sub(r"<[^>]+>", " ", decoded))
 
-    return compact_text(" ".join(text_parts))
+    return compact_text(" ".join(text_parts))[:100000]
 
 
 def disclosure_snippet(text: str, keyword: str, radius: int = 55) -> str | None:
@@ -304,6 +371,7 @@ def analyze_disclosure_content(report_name: str, receipt_no: str, key: str) -> d
     }
 
 
+@serialized(_dart_lock)
 @lru_cache(maxsize=1)
 def dart_corp_codes() -> pd.DataFrame:
     if DART_CORP_CODE_FILE.exists():
@@ -314,34 +382,21 @@ def dart_corp_codes() -> pd.DataFrame:
         return pd.DataFrame(columns=["corp_code", "corp_name", "stock_code", "modify_date"])
 
     url = "https://opendart.fss.or.kr/api/corpCode.xml?" + urllib.parse.urlencode({"crtfc_key": key})
-    try:
+    with tempfile.TemporaryFile() as downloaded:
         with urllib.request.urlopen(url, timeout=20) as response:
-            payload = response.read()
-    except Exception:
-        return pd.DataFrame(columns=["corp_code", "corp_name", "stock_code", "modify_date"])
-
-    import io
-
-    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
-        xml_name = archive.namelist()[0]
-        xml_bytes = archive.read(xml_name)
-
-    root = ET.fromstring(xml_bytes)
-    rows = []
-    for item in root.findall("list"):
-        stock_code = (item.findtext("stock_code") or "").strip()
-        if not stock_code:
-            continue
-        rows.append(
-            {
-                "corp_code": (item.findtext("corp_code") or "").strip(),
-                "corp_name": (item.findtext("corp_name") or "").strip(),
-                "stock_code": stock_code.zfill(6),
-                "modify_date": (item.findtext("modify_date") or "").strip(),
-            }
-        )
-
-    frame = pd.DataFrame(rows)
+            total = 0
+            while block := response.read(64 * 1024):
+                total += len(block)
+                if total > 32 * 1024 * 1024:
+                    raise ValueError("DART company archive is too large")
+                downloaded.write(block)
+        downloaded.seek(0)
+        with zipfile.ZipFile(downloaded) as archive:
+            entry = archive.infolist()[0]
+            if entry.file_size > 256 * 1024 * 1024:
+                raise ValueError("DART company XML is too large")
+            with archive.open(entry) as xml_stream:
+                frame = parse_dart_corp_codes(xml_stream)
     DART_CORP_CODE_FILE.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(DART_CORP_CODE_FILE, index=False, encoding="utf-8-sig")
     return frame
@@ -563,12 +618,11 @@ def market_context_for_date(date_value: Any, stock_code: str | None = None) -> d
         return {"available": False}
 
     target_date = pd.Timestamp(date_value).date().isoformat()
-    features = cached_csv(
+    day = csv_day_rows(
         *file_signature(context_file),
         ("date", "stock_code", "sector", "return_1d"),
+        "date", target_date,
     ).copy()
-    features["date"] = pd.to_datetime(features["date"], errors="coerce").dt.date.astype(str)
-    day = features[features["date"] == target_date].copy()
     day["return_1d"] = pd.to_numeric(day["return_1d"], errors="coerce")
     day["sector"] = day["sector"].fillna("기타").astype(str)
     day = day.dropna(subset=["return_1d"])
@@ -587,12 +641,11 @@ def market_context_for_date(date_value: Any, stock_code: str | None = None) -> d
     risk_signal_ratio = None
     prediction_day = pd.DataFrame()
     if PREDICTION_FILE.exists():
-        predictions = cached_csv(
+        prediction_day = csv_day_rows(
             *file_signature(PREDICTION_FILE),
             ("trade_date", "stock_code", "risk_level"),
+            "trade_date", target_date,
         ).copy()
-        predictions["trade_date"] = pd.to_datetime(predictions["trade_date"], errors="coerce").dt.date.astype(str)
-        prediction_day = predictions[predictions["trade_date"] == target_date]
         if not prediction_day.empty:
             risk_signal_count = int(prediction_day["risk_level"].isin(["CAUTION", "DANGER"]).sum())
             risk_signal_ratio = risk_signal_count / len(prediction_day)
@@ -853,7 +906,8 @@ def download_price(ticker: str) -> pd.DataFrame:
     return normalized
 
 
-@lru_cache(maxsize=128)
+@serialized(_prediction_lock)
+@lru_cache(maxsize=4)
 def build_prediction_frame(ticker: str) -> pd.DataFrame:
     price = download_price(ticker)
     if price.empty:
@@ -1029,7 +1083,11 @@ def top_risks_from_csv(limit: int) -> dict[str, Any]:
     if not PREDICTION_FILE.exists():
         return {"items": [], "latest_date": None, "source": "csv"}
 
-    predictions = cached_csv(*file_signature(PREDICTION_FILE)).copy()
+    predictions = csv_day_rows(
+        *file_signature(PREDICTION_FILE),
+        ("trade_date", "stock_code", "risk_probability", "risk_level"),
+        "trade_date",
+    ).copy()
     if predictions.empty:
         return {"items": [], "latest_date": None, "source": "csv"}
 
