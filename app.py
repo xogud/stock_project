@@ -9,7 +9,8 @@ import urllib.request
 import zipfile
 import xml.etree.ElementTree as ET
 from functools import lru_cache
-from datetime import timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Any
 
@@ -49,7 +50,7 @@ FRONTEND_DIST = Path("frontend/dist")
 FRONTEND_INDEX = FRONTEND_DIST / "index.html"
 START_DATE = "2020-01-01"
 PRICE_SOURCE = os.getenv("PRICE_SOURCE", "cache").strip().lower()
-DART_ENABLED = os.getenv("DART_ENABLED", "0").strip().lower() in {"1", "true", "yes", "on"}
+DART_ENABLED = os.getenv("DART_ENABLED", "1").strip().lower() in {"1", "true", "yes", "on"}
 DART_ANALYZE_DOCUMENTS = os.getenv("DART_ANALYZE_DOCUMENTS", "0").strip().lower() in {"1", "true", "yes", "on"}
 PRELOAD_CACHE = os.getenv("PRELOAD_CACHE", "1").strip().lower() in {"1", "true", "yes", "on"}
 
@@ -411,7 +412,7 @@ def recent_disclosures(
     if not DART_ENABLED:
         return {
             "available": False,
-            "reason": "공시 조회는 빠른 분석을 위해 현재 비활성화되어 있습니다.",
+            "reason": "서버의 DART_ENABLED 설정이 꺼져 있습니다.",
             "items": [],
         }
 
@@ -425,8 +426,8 @@ def recent_disclosures(
 
     try:
         corp_codes = dart_corp_codes()
-    except Exception as error:
-        return {"available": False, "reason": f"DART 회사코드 조회 실패: {error}", "items": []}
+    except Exception:
+        return {"available": False, "reason": "DART 회사코드를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.", "items": []}
 
     if corp_codes.empty:
         return {"available": False, "reason": "DART 회사코드 데이터를 가져오지 못했습니다.", "items": []}
@@ -453,8 +454,8 @@ def recent_disclosures(
     try:
         with urllib.request.urlopen(url, timeout=12) as response:
             payload = json.loads(response.read().decode("utf-8"))
-    except Exception as error:
-        return {"available": False, "reason": f"DART 조회 실패: {error}", "items": []}
+    except Exception:
+        return {"available": False, "reason": "DART 응답이 지연되거나 연결되지 않았습니다. 다시 시도해 주세요.", "items": []}
 
     status = str(payload.get("status", ""))
     if status not in {"000", "013"}:
@@ -995,15 +996,25 @@ def predict(ticker: str, days: int = Query(365, ge=30, le=1800)) -> dict[str, An
             "explanation": clean_value(latest_explanation),
             "reasons": selected_reasons(latest),
             "market_context": market_context_for_date(latest["date"], str(stock.iloc[0]["Code"])),
-            "disclosures": recent_disclosures(
-                str(stock.iloc[0]["Code"]),
-                latest["date"],
-                risk_probability=clean_value(latest["risk_probability"]),
-            ),
         },
         "series": records(selected[series_columns]),
         "recent": records(selected.sort_values("date", ascending=False).head(15)[recent_columns]),
     }
+
+
+@app.get("/api/disclosures/{stock_code}")
+def disclosures(
+    stock_code: str,
+    base_date: date | None = None,
+    risk_probability: float | None = Query(None, ge=0, le=1),
+) -> dict[str, Any]:
+    if not re.fullmatch(r"[0-9A-Za-z]{6}", stock_code):
+        raise HTTPException(422, "Invalid stock code")
+    return recent_disclosures(
+        stock_code,
+        base_date or datetime.now(ZoneInfo("Asia/Seoul")).date(),
+        risk_probability=risk_probability,
+    )
 
 
 @app.get("/api/backtest-summary")

@@ -331,7 +331,29 @@ function MarketContextCard({ context }) {
   )
 }
 
-function DisclosureCard({ disclosures }) {
+function DisclosureCard({ stockCode, riskProbability }) {
+  const [disclosures, setDisclosures] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [attempt, setAttempt] = useState(0)
+  useEffect(() => {
+    const controller = new AbortController()
+    let active = true
+    setLoading(true)
+    setDisclosures(null)
+    const params = new URLSearchParams()
+    if (Number.isFinite(riskProbability)) params.set('risk_probability', String(riskProbability))
+    fetch(`${API_BASE}/api/disclosures/${encodeURIComponent(stockCode)}?${params}`, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('공시 조회에 실패했습니다. 다시 시도해 주세요.')
+        return response.json()
+      })
+      .then((data) => { if (active) setDisclosures(data) })
+      .catch((error) => {
+        if (active) setDisclosures({ available: false, reason: error.message, items: [] })
+      })
+      .finally(() => { if (active) setLoading(false) })
+    return () => { active = false; controller.abort() }
+  }, [stockCode, riskProbability, attempt])
   const summary = disclosures?.summary
   return (
     <section className="panel disclosure-panel">
@@ -339,8 +361,12 @@ function DisclosureCard({ disclosures }) {
         <h3>최근 공시</h3>
         <span>{disclosures?.period ? `${disclosures.period.from} ~ ${disclosures.period.to}` : 'DART'}</span>
       </div>
-      {!disclosures?.available && (
+      {loading && <p className="muted" role="status">공시를 불러오는 중입니다.</p>}
+      {!loading && !disclosures?.available && (
+        <div>
         <p className="muted">{disclosures?.reason || '공시 데이터를 불러오지 못했습니다.'}</p>
+        <button type="button" onClick={() => setAttempt((value) => value + 1)}>다시 시도</button>
+        </div>
       )}
       {disclosures?.available && disclosures.items.length === 0 && (
         <p className="muted">최근 조회 기간에 등록된 공시가 없습니다.</p>
@@ -570,7 +596,7 @@ function PredictionView({ prediction }) {
       <RiskHeader prediction={prediction} />
       <MetricGrid prediction={prediction} />
       <MarketContextCard context={latest.market_context} />
-      <DisclosureCard disclosures={latest.disclosures} />
+      <DisclosureCard key={prediction.stock.code} stockCode={prediction.stock.code} riskProbability={latest.risk_probability} />
 
       <section className="panel insight-panel">
         <div className="panel-title">

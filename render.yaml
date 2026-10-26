@@ -17,6 +17,6 @@ services:
       - key: MYSQL_ENABLED
         value: "0"
       - key: DART_ENABLED
-        value: "0"
+        value: "1"
       - key: DART_API_KEY
         sync: false
